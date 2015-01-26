@@ -33,7 +33,7 @@ bool MyApp::Menu_Palette_Grayscale( Image &image )
 {
     if ( image.IsNull() ) return false; // not essential, but good practice
 
-    static unsigned char LUTgrayscale[255][255][255];
+    static unsigned char LUTgrayscale[256][256][256];
 
     //Compute Look Up Table for grayscale
     for ( int r = 0; r < 256; r++)
@@ -55,7 +55,6 @@ bool MyApp::Menu_Palette_Grayscale( Image &image )
 
             int gray = LUTgrayscale[red][green][blue];
 
-            // HSI intensity component is defined as ( R + G + B ) / 3
             image[r][c].SetGray( gray );
         }
 
