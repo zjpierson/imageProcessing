@@ -21,20 +21,9 @@ Modifications:
 class MyApp : public QObject
 {
     Q_OBJECT;	// QOBJECT macro must appear at start of class
-    static unsigned char LUTgrayscale[256][256][256];
-    static unsigned char LUTnegate[256];
-
-    bool grayscaleINIT;
-    bool negateINIT;
-
-    void init_LUTgrayscale();
-    void init_LUTnegate();
-
     // all menu items must be prototyped in the "public slots" section
     // note the method prototype and naming conventions:
     // bool Menu_Menubar_Menuitem( Image & );
-    public:
-        MyApp();
 
     public slots:
 

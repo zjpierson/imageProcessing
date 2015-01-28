@@ -28,8 +28,3 @@ int main( int argc, char *argv[] )
     return app.Start();
 }
 
-MyApp::MyApp()
-{
-    grayscaleINIT = false;
-    negateINIT = false;
-}
