@@ -4,79 +4,74 @@ bool MyApp::Menu_Color_DiscretePseudocolor( Image &image )
 {
     //Initialize look up grayscale look up table
     if ( image.IsNull() ) return false; // not essential, but good practice
-
-    //create local LUT
-    byte LUTdiscrete[256][3];
-    double steps = (255/8);
-    int count = 0;
-    int red = 0;
-    int green = 0;
-    int blue = 0;
     
-    while(count < 256)
-    {
-        if( steps+count > 256 )
-            break;
+    byte LUTdiscrete[256][3];
+    int count = 0;
+    byte red = 0;
+    byte green = 0;
+    byte blue = 0;
 
-        for( int i = count; i < (steps+count); i++ )
-        {
-            LUTdiscrete[i][0] =  red;
-            LUTdiscrete[i][1] =  green;
-            LUTdiscrete[i][2] =  blue;
-        }
-        count += steps;
-        
+    for(int i = 0; i < 8; i++)
+    {
         //red
-        if(count < (2*steps) && count >= steps)
+        if(i == 1)
         {
             red = 255;
             green = 0;
             blue = 0;
         }
         //orange
-        if(count < (3*steps) && count >= (2*steps))
+        else if(i == 2)
         {
             red = 255;
             green = 128;
             blue = 0;
         }
         //yellow
-        if(count < (4*steps) && count >= (3*steps))
+        else if(i == 3)
         {
             red = 255;
             green = 255;
             blue = 0;
         }
         //green
-        if(count < (5*steps) && count >= (4*steps))
+        else if(i == 4)
         {
             red = 0;
             green = 255;
             blue = 0;
         }
         //blue
-        if(count < (6*steps) && count >= (5*steps))
+        else if(i == 5)
         {
             red = 0;
             green = 0;
             blue = 255;
         }
         //violet
-        if(count < (7*steps) && count >= (6*steps))
+        else if(i == 6)
         {
             red = 128;
             green = 0;
             blue = 128;
         }
         //white
-        if(count < (8*steps) && count >= (7*steps))
+        else if(i == 7)
         {
             red = 255;
             green = 255;
             blue = 255;
         }
+
+        for( int j = count; j < (32+count); j++ )
+        {
+            LUTdiscrete[j][0] =  red;
+            LUTdiscrete[j][1] =  green;
+            LUTdiscrete[j][2] =  blue;
+        }
+
+        count += 32;
     }
-    //   LUTdiscrete[i] = steps * (i/(int)steps); //need integer division
 
     clock_t LUTtime;
     LUTtime = clock();
@@ -105,3 +100,4 @@ bool MyApp::Menu_Color_ContinuousPseudocolor( Image &image )
 {
     return true;
 }
+

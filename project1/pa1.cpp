@@ -16,12 +16,6 @@ Modifications:
 // typical main function
 int main( int argc, char *argv[] )
 {
-    //check cmd args
-    for( int i = 1; i < argc; i++ )
-    {
-        //open image argv[i];
-    }
-
     MyApp obj;
     ImageApp app( argc, argv );
     app.AddActions( &obj );

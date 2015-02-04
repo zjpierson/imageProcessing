@@ -198,6 +198,9 @@ bool MyApp::Menu_Palette_Brightness( Image &image )
 //Dr. Weiss
 bool MyApp::Menu_Palette_Contrast( Image &image )
 {
+    //Initialize look up grayscale look up table
+    if ( image.IsNull() ) return false; // not essential, but good practice
+
     // int imin = 32, imax = 224;
     int min = 0, max = 255;
     if ( !Dialog( "endpoints" ).Add( min, "left", 0, 255 ).Add( max, "right", 0, 255 ).Show() )

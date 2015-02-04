@@ -16,6 +16,9 @@ Modifications:
 #include <time.h>
 #include <iostream>
 #include <math.h>
+#include <vector>
+
+using namespace std;
 
 // class declaration
 class MyApp : public QObject
