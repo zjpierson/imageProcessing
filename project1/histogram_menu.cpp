@@ -68,32 +68,84 @@ bool MyApp::Menu_Histogram_AutoStretch( Image &image )
 //modified by Zach & Kayhan
 bool MyApp::Menu_Histogram_ModStretch( Image &image )
 {
-//    //checks image validity
-//    if ( image.IsNull() ) return false; // not essential, but good practice
-//
-//    int min = 0, max = 255;
-//    if ( !Dialog( "endpoints" ).Add( min, "left", 0, 255 ).Add( max, "right", 0, 255 ).Show() )
-//        return false;
-//
-//    // create lookup table and sets values
-//    byte LUTcontrast[256];
-//    for ( int i = 0; i < min; i++ )
-//        LUTcontrast[i] = 0;
-//    for ( int i = max + 1; i < 256; i++ )
-//        LUTcontrast[i] = 255;
-//    double slope = 255.0 / (max - min );
-//    for ( int i = min; i <= max; i++ )
-//        LUTcontrast[i] = (byte)(slope * ( i - min )
-//
-//    // apply LUT
-//    int nrows = image.Height();
-//    int ncols = image.Width(); 
-//    for ( int r = 0; r < nrows; r++ )
-//        for ( int c = 0; c < ncols; c++ )
-//            image[r][c] = LUTcontrast[ image[r][c] ];
-//
-//    //updates image
-//    return true;
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+
+    double min = 1;                              
+    double max = 1;
+    int imin = 0;
+    int imax = 255;
+    int sum = 0;
+    int pixPercent = 0;
+
+    if( !Dialog("Stretch").Add(min, "Min", 0, 100).Add(max, "Max", 0, 100).Show())
+            return false;
+
+
+    //creates a vector of the elements in the image
+    vector<unsigned int> histogramE = image.Histogram();
+    
+    //look up table and variables
+    byte temp;
+    byte LUTstretch[256] = { 0 };
+    pixPercent = ((image.Height() * image.Width()) * (min/100));
+
+    //loop though vector and find min percentage pixel values
+    for(int i = 0; i < 256; i++)
+    {
+        sum += histogramE[i];
+
+        if (sum >= pixPercent)
+        {
+            imin = i;
+            break;
+        }
+    }
+
+    pixPercent = ((image.Height() * image.Width()) * (max/100));
+    sum = 0;  //reset the sum values
+    //find max percentage pixel values
+    for(int i = 255; i >= 0; i--)
+    {
+        sum += histogramE[i];
+
+        if (sum >= pixPercent)
+        {
+            imax = i;
+            break;
+        }
+    }
+
+    //divide by 0 check && no crossing min and max
+    if(imax <= imin)
+        return false;
+    
+    //clips the leading and trailing values
+    for(int i = 0; i < imin; i++)
+        LUTstretch[i] = 0;
+    for(int i = 255; i >= imax; i--)
+        LUTstretch[i] = 255;
+
+    //sets look up table values
+    for(int i = imin; i < imax; i++)
+    {
+        temp = (255.0/(imax - imin)) * (i - imin);
+        LUTstretch[i] = temp;
+        if(temp > 255)
+            LUTstretch[i] = 255;
+        if(temp < 0)
+            LUTstretch[i] = 0;
+    } 
+
+    // apply look up table to image
+    int nrows = image.Height();
+    int ncols = image.Width();
+    for ( int r = 0; r < nrows; r++ )
+        for ( int c = 0; c < ncols; c++ )
+            image[r][c] = LUTstretch[ image[r][c] ];
+
+    //updates image
+    return true;
 }
 
 bool MyApp::Menu_Histogram_Equalize( Image &image )
