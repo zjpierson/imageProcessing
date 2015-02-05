@@ -21,7 +21,6 @@ bool MyApp::Menu_Histogram_AutoStretch( Image &image )
     byte LUTauto[256];                                 
     unsigned int min = 0;                              
     unsigned int max = 255;
-    byte temp;
 
     //loop though vector and find min and max pixel values
     for(int i = 0; i < histogramE.size(); i++)
@@ -46,12 +45,7 @@ bool MyApp::Menu_Histogram_AutoStretch( Image &image )
     //sets look up table values
     for(int i = 0; i < 256; i++)
     {
-        temp = (255.0/(max - min)) * (i - min);
-        LUTauto[i] = temp;
-        if(temp > 255)
-            LUTauto[i] = 255;
-        if(temp < 0)
-            LUTauto[i] = 0;
+        LUTauto[i] = (255.0/(max - min)) * (i - min);
     }
 
     // apply look up table to image
@@ -86,7 +80,6 @@ bool MyApp::Menu_Histogram_ModStretch( Image &image )
     vector<unsigned int> histogramE = image.Histogram();
     
     //look up table and variables
-    byte temp;
     byte LUTstretch[256] = { 0 };
     pixPercent = ((image.Height() * image.Width()) * (min/100));
 
@@ -129,12 +122,7 @@ bool MyApp::Menu_Histogram_ModStretch( Image &image )
     //sets look up table values
     for(int i = imin; i < imax; i++)
     {
-        temp = (255.0/(imax - imin)) * (i - imin);
-        LUTstretch[i] = temp;
-        if(temp > 255)
-            LUTstretch[i] = 255;
-        if(temp < 0)
-            LUTstretch[i] = 0;
+        LUTstretch[i] = (255.0/(imax - imin)) * (i - imin);
     } 
 
     // apply look up table to image
@@ -150,10 +138,68 @@ bool MyApp::Menu_Histogram_ModStretch( Image &image )
 
 bool MyApp::Menu_Histogram_Equalize( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+
+    long long sum = 0;
+    long long totalPxl = image.Height() * image.Width();
+
+    //creates a vector of the elements in the image
+    vector<unsigned int> histogramE = image.Histogram();
+    
+    //look up table 
+    byte LUTcdf[256] = { 0 };
+
+    //loop though vector and create LUT
+    for(int i = 0; i < 256; i++)
+    {
+        sum += histogramE[i];
+        LUTcdf[i] = sum * (255.0/totalPxl);
+    }
+
+    // apply look up table to image
+    int nrows = image.Height();
+    int ncols = image.Width();
+    for ( int r = 0; r < nrows; r++ )
+        for ( int c = 0; c < ncols; c++ )
+            image[r][c] = LUTcdf[ image[r][c] ];
+
+    //updates image
     return true;
 }
 
 bool MyApp::Menu_Histogram_ClipEqualize( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+
+    long long sum = 0;
+    long long totalPxl = image.Height() * image.Width();
+    double percent = 1;
+
+    if( !Dialog("Clip Threshold").Add(percent, "percent", 0, 100).Show())
+            return false;
+
+    //creates a vector of the elements in the image
+    vector<unsigned int> histogramE = image.Histogram();
+    
+    //look up table 
+    byte LUTcdf[256] = { 0 };
+
+    //loop though vector and create LUT
+    for(int i = 0; i < 256; i++)
+    {
+        sum += histogramE[i];
+        LUTcdf[i] = sum * (255.0/totalPxl);
+    }
+
+    // apply look up table to image
+    int nrows = image.Height();
+    int ncols = image.Width();
+    for ( int r = 0; r < nrows; r++ )
+        for ( int c = 0; c < ncols; c++ )
+            image[r][c] = LUTcdf[ image[r][c] ];
+
+    //updates image
     return true;
 }

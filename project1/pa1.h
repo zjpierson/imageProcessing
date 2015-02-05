@@ -47,4 +47,5 @@ class MyApp : public QObject
 
         bool Menu_Color_DiscretePseudocolor( Image & );
         bool Menu_Color_ContinuousPseudocolor( Image & );
+        bool Menu_Color_American( Image &);
 };
