@@ -1,16 +1,19 @@
 #include "pa1.h"
 
+//created by Zach & Kayhan
 bool MyApp::Menu_Color_DiscretePseudocolor( Image &image )
 {
-    //Initialize look up grayscale look up table
+    //checks image for validity
     if ( image.IsNull() ) return false; // not essential, but good practice
     
-    byte LUTdiscrete[256][3];
+    //variables
+    byte LUTdiscrete[256][3] = { 0 };
     int count = 0;
     byte red = 0;
     byte green = 0;
     byte blue = 0;
 
+    //loops through each of the 8 layers and sets a specific color
     for(int i = 0; i < 8; i++)
     {
         //red
@@ -63,6 +66,7 @@ bool MyApp::Menu_Color_DiscretePseudocolor( Image &image )
             blue = 255;
         }
 
+        //sets the values of the look up table
         for( int j = count; j < (32+count); j++ )
         {
             LUTdiscrete[j][0] =  red;
@@ -73,24 +77,19 @@ bool MyApp::Menu_Color_DiscretePseudocolor( Image &image )
         count += 32;
     }
 
-    clock_t LUTtime;
-    LUTtime = clock();
-
-    // convert RGB values to HSI intensities
+    //loops through image and sets the colors accordingly
     int nrows = image.Height();
     int ncols = image.Width();
     for ( int r = 0; r < nrows; r++ )
     {
         for ( int c = 0; c < ncols; c++ )
         {
-            image[r][c].SetRed(LUTdiscrete[image[r][c]][0]);
-            image[r][c].SetGreen(LUTdiscrete[image[r][c]][1]);
-            image[r][c].SetBlue(LUTdiscrete[image[r][c]][2]);
+            int pix = image[r][c]; //ensures no race conditions
+            image[r][c].SetRed( LUTdiscrete[pix][0] );
+            image[r][c].SetGreen( LUTdiscrete[pix][1] );
+            image[r][c].SetBlue( LUTdiscrete[pix][2] );
         }
     }
-
-    LUTtime = clock() - LUTtime;
-    std::cout << "time: " << LUTtime << std::endl;
 
     // return true to update the image
     return true;

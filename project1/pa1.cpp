@@ -2,18 +2,17 @@
                ***** program1.cpp *****
 
 Demo program to illustrate qtImageLib.
-Example 2 shows how to add menu items to the default image viewer.
 
 Author: John M. Weiss, Ph.D.
-Written Spring 2015 for SDSM&T CSC442/542 DIP course.
+Program written Spring 2015 for SDSM&T CSC442/542 DIP course.
 
-Modifications:
+
+Modifications by: Zach Pierson & Kayhan Karatekeli
+Note: Modifications apply to whole program including supplemental header and cpp files. 
+      Any modified functions will be denoted above functions individually.
 */
-
-// QtImageLib requires interface as well as implementation
 #include "pa1.h"
 
-// typical main function
 int main( int argc, char *argv[] )
 {
     MyApp obj;

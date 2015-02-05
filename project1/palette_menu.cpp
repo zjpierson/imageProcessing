@@ -1,44 +1,37 @@
-//FIX: log function needs attention!!
-//
-//
-
 #include "pa1.h"
 
-//Dr. Weiss
-//Modifyed by us
+//modified by Zach & Kayhan
 bool MyApp::Menu_Palette_Grayscale( Image &image )
 {
+    //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
     
-    clock_t LUTtime;
-    LUTtime = clock();
-
     // convert RGB values to HSI intensities
     int nrows = image.Height();
     int ncols = image.Width();
+    
     for ( int r = 0; r < nrows; r++ )
     {
         for ( int c = 0; c < ncols; c++ )
         {
-            // red/green/blue channels can be accessed directly using
+            //saves RGB values respectively
             byte red = image[r][c].Red();
             byte green = image[r][c].Green();
             byte blue = image[r][c].Blue();
 
-            // int gray = LUTgrayscale[red][green][blue];
+            //sets weighted values to create greyscale
             int gray = 0.30 * red + 0.59 * green + 0.11 * blue + 0.5;
 
+            //sets the image to greyscale
             image[r][c].SetGray( gray );
         }
     }
-
-    LUTtime = clock() - LUTtime;
-    std::cout << "time: " << LUTtime << std::endl;
 
     // return true to update the image
     return true;
 }
 
+//modified by Zach & Kayhan
 bool MyApp::Menu_Palette_Negate( Image &image )
 {
     if ( image.IsNull() ) return false; // not essential, but good practice
@@ -51,31 +44,25 @@ bool MyApp::Menu_Palette_Negate( Image &image )
             LUTnegate[i] = 255 - i;
     }
 
-    clock_t LUTtime;
-    LUTtime = clock();
-
     // convert RGB values to HSI intensities
     int nrows = image.Height();
     int ncols = image.Width();
+
+    //sets image values to lookup table
     for ( int r = 0; r < nrows; r++ )
     {
         for ( int c = 0; c < ncols; c++ )
-        {
             image[r][c] = LUTnegate[image[r][c]];
-        }
     }
-
-    LUTtime = clock() - LUTtime;
-    std::cout << "time: " << LUTtime << std::endl;
 
     // return true to update the image
     return true;
 }
 
-
+//modified by Zach & Kayhan
 bool MyApp::Menu_Palette_Threshold( Image &image )
 {
-    //Initialize look up grayscale look up table
+    //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
 
     //get threshold from user input
@@ -83,23 +70,24 @@ bool MyApp::Menu_Palette_Threshold( Image &image )
     if( !Dialog("Threshold").Add(threshold, "set", 0, 255).Show())
             return false;
 
-    clock_t LUTtime;
-    LUTtime = clock();
-
     // convert RGB values to HSI intensities
     int nrows = image.Height();
     int ncols = image.Width();
+
+    //sets image with new values
     for ( int r = 0; r < nrows; r++ )
     {
         for ( int c = 0; c < ncols; c++ )
         {
-            // red/green/blue channels can be accessed directly using
+            //saves RGB values respectively
             byte red = image[r][c].Red();
             byte green = image[r][c].Green();
             byte blue = image[r][c].Blue();
 
+            //changes image to greyscale
             int gray = 0.30 * red + 0.59 * green + 0.11 * blue + 0.5;
 
+            //clips values if outside range: 0-255
             if( gray < threshold)
                 image[r][c].SetGray( 0 );
             else
@@ -108,16 +96,14 @@ bool MyApp::Menu_Palette_Threshold( Image &image )
         }
     }
 
-    LUTtime = clock() - LUTtime;
-    std::cout << "time: " << LUTtime << std::endl;
-
     // return true to update the image
     return true;
 }
 
+//modified by Zach & Kayhan
 bool MyApp::Menu_Palette_Posterize( Image &image )
 {
-    //Initialize look up grayscale look up table
+    //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
 
     //get threshold from user input
@@ -125,32 +111,34 @@ bool MyApp::Menu_Palette_Posterize( Image &image )
     if( !Dialog("Posterize").Add(levels, "Levels", 1, 255).Show())
         return false;
 
-    //create local LUT
+    //create lookup table
     byte LUTpost[256];
-    int steps = 255 / (levels - 1);   //need this to be interger division
+
+    //establishes increment for number of levels specified
+    int steps = 255 / (levels - 1);
+
+    //sets lookup table to approperiate values
     for( int i = 0; i < 256; i++ )
         LUTpost[i] = steps * (i/steps); //need integer division
-
-    clock_t LUTtime;
-    LUTtime = clock();
 
     // convert RGB values to HSI intensities
     int nrows = image.Height();
     int ncols = image.Width();
+
+    //changes image values with LUT
     for ( int r = 0; r < nrows; r++ )
+    {
         for ( int c = 0; c < ncols; c++ )
             image[r][c] = LUTpost[image[r][c]];
-
-    LUTtime = clock() - LUTtime;
-    std::cout << "time: " << LUTtime << std::endl;
-
+    }
     // return true to update the image
     return true;
 }
 
+//modified by Zach & Kayhan
 bool MyApp::Menu_Palette_Brightness( Image &image )
 {
-    //Initialize look up grayscale look up table
+    //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
 
     //get brightness constant from user input
@@ -158,9 +146,10 @@ bool MyApp::Menu_Palette_Brightness( Image &image )
     if(!Dialog("Brightness").Add(brightness, "decrease/increase", -255, 255).Show())
         return false;
 
-    //create local LUT
+    //sets lookup table to approperiate values
     byte LUTbright[256];
     int temp;
+    
     for( int i = 0; i < 256; i++ )
     {
         temp = i + brightness;
@@ -168,68 +157,73 @@ bool MyApp::Menu_Palette_Brightness( Image &image )
             temp = 0;
         if(temp > 255)
             temp = 255;
+     
         LUTbright[i] = temp;
     }
-
-    clock_t LUTtime;
-    LUTtime = clock();
 
     // convert RGB values to HSI intensities
     int nrows = image.Height();
     int ncols = image.Width();
+    
+    //changes image values with LUT
     for ( int r = 0; r < nrows; r++ )
+    {
         for ( int c = 0; c < ncols; c++ )
         {
-            // red/green/blue channels can be accessed directly using
+            //saves RGB values respectively
             byte red = LUTbright[image[r][c].Red()];
             byte green = LUTbright[image[r][c].Green()];
             byte blue = LUTbright[image[r][c].Blue()];
 
+            //sets image intensities
             image[r][c].SetRGB(red, green, blue);
         }
-
-    LUTtime = clock() - LUTtime;
-    std::cout << "time: " << LUTtime << std::endl;
-
+    }
     // return true to update the image
     return true;
 }
 
-//Dr. Weiss
+//modified by Zach & Kayhan
 bool MyApp::Menu_Palette_Contrast( Image &image )
 {
-    //Initialize look up grayscale look up table
+    //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
 
-    // int imin = 32, imax = 224;
     int min = 0, max = 255;
+    
+    //allows user to input values
     if ( !Dialog( "endpoints" ).Add( min, "left", 0, 255 ).Add( max, "right", 0, 255 ).Show() )
         return false;
 
-    // create lookup table
+    // create lookup table and sets them accordingly
     byte LUTcontrast[256];
     for ( int i = 0; i < min; i++ )
         LUTcontrast[i] = 0;
     for ( int i = max + 1; i < 256; i++ )
         LUTcontrast[i] = 255;
+
     double slope = 255.0 / (max - min );
     for ( int i = min; i <= max; i++ )
         LUTcontrast[i] = (byte)(slope * ( i - min ));
 
-    // apply LUTcontrastette
+    // apply LUTcontrast
     int nrows = image.Height();
     int ncols = image.Width();
-//    image.ToYIQ();
+    
+    //sets image values to LUT
     for ( int r = 0; r < nrows; r++ )
+    {
         for ( int c = 0; c < ncols; c++ )
             image[r][c] = LUTcontrast[ image[r][c] ];
-
+    }
+    // return true to update the image
     return true;
 }
 
+//created by Zach & Kayhan
 bool MyApp::Menu_Palette_Gamma( Image &image )
 {
-    //Initialize look up grayscale look up table
+    //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
 
     //get brightness constant from user input
@@ -240,60 +234,49 @@ bool MyApp::Menu_Palette_Gamma( Image &image )
     //create local LUT
     byte LUTgamma[256];
     for( int i = 0; i < 256; i++ )
-    {
         LUTgamma[i] = pow( (i/255.0), gamma) * 255;
-    }
-
-    clock_t LUTtime;
-    LUTtime = clock();
 
     // convert RGB values to HSI intensities
     int nrows = image.Height();
     int ncols = image.Width();
     for ( int r = 0; r < nrows; r++ )
+    {
         for ( int c = 0; c < ncols; c++ )
         {
-            // red/green/blue channels can be accessed directly using
+            //saves RGB values respectively
             byte red = LUTgamma[image[r][c].Red()];
             byte green = LUTgamma[image[r][c].Green()];
             byte blue = LUTgamma[image[r][c].Blue()];
 
+            //sets image intensities
             image[r][c].SetRGB(red, green, blue);
         }
-
-    LUTtime = clock() - LUTtime;
-    std::cout << "time: " << LUTtime << std::endl;
-
+    }
     // return true to update the image
     return true;
 }
 
+//created by Zach & Kayhan
 bool MyApp::Menu_Palette_Log( Image &image )
 {
-    //Initialize look up grayscale look up table
+    //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
 
-    //create local LUT
+    //create local LUT and sets the values
     byte LUTlog[256];
     for( int i = 0; i < 256; i++ )
         LUTlog[i] = log(i+1) * (255/log(256));
 
-    clock_t LUTtime;
-    LUTtime = clock();
-
     // convert RGB values to HSI intensities
     int nrows = image.Height();
     int ncols = image.Width();
+    
+    //sets image to LUT values
     for ( int r = 0; r < nrows; r++ )
     {
         for ( int c = 0; c < ncols; c++ )
-        {
             image[r][c] = LUTlog[image[r][c]];
-        }
     }
-
-    LUTtime = clock() - LUTtime;
-    std::cout << "time: " << LUTtime << std::endl;
 
     // return true to update the image
     return true;
