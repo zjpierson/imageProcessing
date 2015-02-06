@@ -4,8 +4,9 @@
 /************************************************************************
 Function:     
 Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Color_DiscretePseudocolor( Image &image )
 {
@@ -104,8 +105,9 @@ bool MyApp::Menu_Color_DiscretePseudocolor( Image &image )
 /************************************************************************
 Function:     
 Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Color_ContinuousPseudocolor( Image &image )
 {
@@ -158,8 +160,9 @@ bool MyApp::Menu_Color_ContinuousPseudocolor( Image &image )
 /************************************************************************
 Function:     
 Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Color_American( Image &image )
 {

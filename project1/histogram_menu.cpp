@@ -4,8 +4,9 @@
 /************************************************************************
 Function:     
 Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Histogram_Display( Image &image )
 {
@@ -18,8 +19,9 @@ bool MyApp::Menu_Histogram_Display( Image &image )
 /************************************************************************
 Function:     
 Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Histogram_AutoStretch( Image &image )
 {
@@ -75,8 +77,9 @@ bool MyApp::Menu_Histogram_AutoStretch( Image &image )
 /************************************************************************
 Function:     
 Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Histogram_ModStretch( Image &image )
 {
@@ -157,8 +160,9 @@ bool MyApp::Menu_Histogram_ModStretch( Image &image )
 /************************************************************************
 Function:     
 Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Histogram_Equalize( Image &image )
 {
@@ -195,8 +199,9 @@ bool MyApp::Menu_Histogram_Equalize( Image &image )
 /************************************************************************
 Function:     
 Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Histogram_ClipEqualize( Image &image )
 {

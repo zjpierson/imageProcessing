@@ -2,10 +2,11 @@
 
 //modified by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Function:     Greyscale 
+Description:  This function converts an image to greyscale.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Palette_Grayscale( Image &image )
 {
@@ -39,10 +40,11 @@ bool MyApp::Menu_Palette_Grayscale( Image &image )
 
 //modified by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Function:     Negate 
+Description:  This function negates the image.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Palette_Negate( Image &image )
 {
@@ -73,10 +75,14 @@ bool MyApp::Menu_Palette_Negate( Image &image )
 
 //modified by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Function:     Threshold  
+Description:  This function allows the user to set a threshold value that
+              converts the image to a binary image using the input as the
+              median.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL or user
+                                 enters an invalid value.
 ************************************************************************/
 bool MyApp::Menu_Palette_Threshold( Image &image )
 {
@@ -120,10 +126,15 @@ bool MyApp::Menu_Palette_Threshold( Image &image )
 
 //modified by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Function:     Posterize
+Description:  This function allows the user to select the number of
+              levels they wish to use for the posterize. Then the image 
+              intensities are blocked according to the levels they 
+              desire.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL or user
+                                 enters an invalid value.
 ************************************************************************/
 bool MyApp::Menu_Palette_Posterize( Image &image )
 {
@@ -161,10 +172,13 @@ bool MyApp::Menu_Palette_Posterize( Image &image )
 
 //modified by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Function:     Brightness
+Description:  This function increases/decreases the intensity or
+              brightness values of the image.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL or user
+                                 enters an invalid value.
 ************************************************************************/
 bool MyApp::Menu_Palette_Brightness( Image &image )
 {
@@ -215,10 +229,12 @@ bool MyApp::Menu_Palette_Brightness( Image &image )
 
 //modified by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Function:     Contrast
+Description:  This function changes the contrast of the image.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL or user
+                                 enters an invalid value.
 ************************************************************************/
 bool MyApp::Menu_Palette_Contrast( Image &image )
 {
@@ -258,10 +274,11 @@ bool MyApp::Menu_Palette_Contrast( Image &image )
 
 //created by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Function:     Gamma 
+Description:  This function manipulates the gamma values of the image.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
 ************************************************************************/
 bool MyApp::Menu_Palette_Gamma( Image &image )
 {
@@ -300,10 +317,13 @@ bool MyApp::Menu_Palette_Gamma( Image &image )
 
 //created by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
-Parameters:   param[in]  xx - 
-              param[out] xx - 
+Function:     Log 
+Description:  This function takes the log of the intensity values for
+              the image.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL or user
+                                 enters an invalid value.
 ************************************************************************/
 bool MyApp::Menu_Palette_Log( Image &image )
 {
