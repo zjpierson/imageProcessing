@@ -1,6 +1,12 @@
 #include "pa1.h"
 
 //created by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Histogram_Display( Image &image )
 {
     //displays histogram of image
@@ -9,6 +15,12 @@ bool MyApp::Menu_Histogram_Display( Image &image )
 }
 
 //created by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Histogram_AutoStretch( Image &image )
 {
     //checks image validity
@@ -60,6 +72,12 @@ bool MyApp::Menu_Histogram_AutoStretch( Image &image )
 }
 
 //modified by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Histogram_ModStretch( Image &image )
 {
     //checks image validity
@@ -136,6 +154,12 @@ bool MyApp::Menu_Histogram_ModStretch( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Histogram_Equalize( Image &image )
 {
     //checks image validity
@@ -168,6 +192,12 @@ bool MyApp::Menu_Histogram_Equalize( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Histogram_ClipEqualize( Image &image )
 {
     //checks image validity

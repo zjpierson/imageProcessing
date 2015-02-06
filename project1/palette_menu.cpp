@@ -1,6 +1,12 @@
 #include "pa1.h"
 
 //modified by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Palette_Grayscale( Image &image )
 {
     //checks image validity
@@ -32,6 +38,12 @@ bool MyApp::Menu_Palette_Grayscale( Image &image )
 }
 
 //modified by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Palette_Negate( Image &image )
 {
     if ( image.IsNull() ) return false; // not essential, but good practice
@@ -60,6 +72,12 @@ bool MyApp::Menu_Palette_Negate( Image &image )
 }
 
 //modified by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Palette_Threshold( Image &image )
 {
     //checks image validity
@@ -101,6 +119,12 @@ bool MyApp::Menu_Palette_Threshold( Image &image )
 }
 
 //modified by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Palette_Posterize( Image &image )
 {
     //checks image validity
@@ -136,6 +160,12 @@ bool MyApp::Menu_Palette_Posterize( Image &image )
 }
 
 //modified by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Palette_Brightness( Image &image )
 {
     //checks image validity
@@ -184,6 +214,12 @@ bool MyApp::Menu_Palette_Brightness( Image &image )
 }
 
 //modified by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Palette_Contrast( Image &image )
 {
     //checks image validity
@@ -221,6 +257,12 @@ bool MyApp::Menu_Palette_Contrast( Image &image )
 }
 
 //created by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Palette_Gamma( Image &image )
 {
     //checks image validity
@@ -257,6 +299,12 @@ bool MyApp::Menu_Palette_Gamma( Image &image )
 }
 
 //created by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Palette_Log( Image &image )
 {
     //checks image validity

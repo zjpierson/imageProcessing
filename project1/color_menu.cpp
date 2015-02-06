@@ -1,6 +1,12 @@
 #include "pa1.h"
 
 //created by Zach & Kayhan
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Color_DiscretePseudocolor( Image &image )
 {
     //checks image for validity
@@ -95,6 +101,12 @@ bool MyApp::Menu_Color_DiscretePseudocolor( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Color_ContinuousPseudocolor( Image &image )
 {
     //checks image for validity
@@ -143,6 +155,12 @@ bool MyApp::Menu_Color_ContinuousPseudocolor( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     
+Description:  
+Parameters:   param[in]  xx - 
+              param[out] xx - 
+************************************************************************/
 bool MyApp::Menu_Color_American( Image &image )
 {
     //checks image for validity
