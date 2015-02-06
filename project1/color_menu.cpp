@@ -2,8 +2,13 @@
 
 //created by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
+Function:     DescretePseudocolor
+Description:  This function changes an image to 8 level pseudo color
+              based on original pixel intensities.  First, the lookup
+              table is created by predefining 8 pixle values and setting
+              32 consecutive elements in the LUT to those values. The 
+              next loop iterates though all the pixels in the image and
+              sets each color element using the LUT. 
 Parameters:   param[in]  image - The image being converted.
               param[out] true  - Updates the image upon completion.
               param[out] false - Exits function if image is NULL.
@@ -103,8 +108,17 @@ bool MyApp::Menu_Color_DiscretePseudocolor( Image &image )
 }
 
 /************************************************************************
-Function:     
-Description:  
+Function:     ContinuousPseudocolor
+Description:  This function is very similar to the descrete pseudocolor
+              except that predetermined colors are not set. Instead, 3
+              seperate Look Up Tables (one for each color element) is 
+              implemented in this design. for the red LUT, we simply 
+              match the intensity that is passed in.  for the green LUT,
+              we map 0-127 input values from 0-255 and 128-255 input 
+              values to 255-0. for the blue LUT, we simply negate the
+              value that was passed in. We then iterate thought each
+              pixel and set the red green and blue values according
+              to the Look Up Tables.
 Parameters:   param[in]  image - The image being converted.
               param[out] true  - Updates the image upon completion.
               param[out] false - Exits function if image is NULL.
@@ -158,8 +172,13 @@ bool MyApp::Menu_Color_ContinuousPseudocolor( Image &image )
 }
 
 /************************************************************************
-Function:     
-Description:  
+Function:     American
+Description:  This function is our own version of a 4 level pseudocolor.
+              It is called american because the speudocolors chosen are
+              black, red, white, and blue. A loop that iterates 4 times
+              sets all the colors for the Look Up Tables. The next loop
+              goes though each pixel using the LUT's to convert the
+              image to a 4 level pseudocolor resembling the American flag.
 Parameters:   param[in]  image - The image being converted.
               param[out] true  - Updates the image upon completion.
               param[out] false - Exits function if image is NULL.

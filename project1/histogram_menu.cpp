@@ -2,8 +2,9 @@
 
 //created by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
+Function:     Display
+Description:  This function simply calls the displayHistogram function
+              of QtImageLib.
 Parameters:   param[in]  image - The image being converted.
               param[out] true  - Updates the image upon completion.
               param[out] false - Exits function if image is NULL.
@@ -17,8 +18,13 @@ bool MyApp::Menu_Histogram_Display( Image &image )
 
 //created by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
+Function:     Auto_Stretch
+Description:  This function stretches the histogram just enough to have
+              the full range of pixel intensities. This is achived by
+              first finding the minimum and maximum pixel intensities of
+              the image. With that we can populate our Look Up Table with
+              updated histogram information. This point process is then
+              applied to every pixel in the image.
 Parameters:   param[in]  image - The image being converted.
               param[out] true  - Updates the image upon completion.
               param[out] false - Exits function if image is NULL.
