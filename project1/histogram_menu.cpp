@@ -176,12 +176,28 @@ bool MyApp::Menu_Histogram_ClipEqualize( Image &image )
     long long sum = 0;
     long long totalPxl = image.Height() * image.Width();
     double percent = 1;
+    long cut;
 
     if( !Dialog("Clip Threshold").Add(percent, "percent", 0, 100).Show())
             return false;
 
+    cut = totalPxl * percent;
+
     //creates a vector of the elements in the image
     vector<unsigned int> histogramE = image.Histogram();
+
+    for(int i = 0; i < 256; i++)
+    {
+        if( histogramE[i] > cut )
+            histogramE[i] = cut;
+    }
+    //add new number of pixles
+    for(int i = 0; i < 256; i++)
+    {
+        sum += histogramE[i];
+    }
+    totalPxl = sum;
+    sum = 0;
     
     //look up table 
     byte LUTcdf[256] = { 0 };
