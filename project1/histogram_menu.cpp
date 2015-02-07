@@ -81,8 +81,15 @@ bool MyApp::Menu_Histogram_AutoStretch( Image &image )
 
 //modified by Zach & Kayhan
 /************************************************************************
-Function:     
-Description:  
+Function:     ModStretch
+Description:  This function asks the user for a percentage of pixels to
+              ignore from both ends. We first find the number of pixels
+              to ignore and then loop though the histogram until we have
+              iterated though that number of pixels. We store the integer
+              min and max values as positions. This is used to streatch 
+              the histogram up to those points. A linear ramp is used on
+              the rest of the histogram. We apply the LUT to the image as
+              a point process and return true;
 Parameters:   param[in]  image - The image being converted.
               param[out] true  - Updates the image upon completion.
               param[out] false - Exits function if image is NULL.
@@ -164,8 +171,11 @@ bool MyApp::Menu_Histogram_ModStretch( Image &image )
 }
 
 /************************************************************************
-Function:     
-Description:  
+Function:     Equalize
+Description:  This function goes through the histogram data and applies
+              the Cumulative Distribution Function CDF to create the
+              Look Up Table. The LUT is then applied as a point process
+              the the individual pixels in the image.
 Parameters:   param[in]  image - The image being converted.
               param[out] true  - Updates the image upon completion.
               param[out] false - Exits function if image is NULL.
@@ -203,8 +213,14 @@ bool MyApp::Menu_Histogram_Equalize( Image &image )
 }
 
 /************************************************************************
-Function:     
-Description:  
+Function:     ClipEqualize
+Description:  This function is very similar to the Equalize function
+              except that it clips a percentage of the histogram before
+              creating the Look Up Table. The user specifies the precent.
+              A loop goes though the histogram values and clips them
+              if they are above that percentage of the total pixels. The
+              new total number of pixels is then stored in order to do 
+              the computation that the Equalize function does.
 Parameters:   param[in]  image - The image being converted.
               param[out] true  - Updates the image upon completion.
               param[out] false - Exits function if image is NULL.

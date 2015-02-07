@@ -241,22 +241,63 @@ bool MyApp::Menu_Palette_Contrast( Image &image )
     //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
 
-    int min = 0, max = 255;
+    double min = 1;
+    double max = 1;
+    int imin = 0;
+    int imax = 255;
+    int sum = 0;
+    int pixPercent = 0;
     
     //allows user to input values
-    if ( !Dialog( "endpoints" ).Add( min, "left", 0, 255 ).Add( max, "right", 0, 255 ).Show() )
+    if ( !Dialog( "Endpoints" ).Add( min, "left", 0, 100 ).Add( max, "right", 0, 100 ).Show() )
+        return false;
+
+    //creates a vector of the elements in the image
+    vector<unsigned int> hist = image.Histogram();
+    
+    //look up table and variables
+    byte LUTcontrast[256] = { 0 };
+    pixPercent = ((image.Height() * image.Width()) * (min/100));
+
+    //loop though vector and find min percentage pixel values
+    for(int i = 0; i < 256; i++)
+    {
+        sum += hist[i];
+
+        if (sum >= pixPercent)
+        {
+            imin = i;
+            break;
+        }
+    }
+
+    pixPercent = ((image.Height() * image.Width()) * (max/100));
+    sum = 0;  //reset the sum values
+    //find max percentage pixel values
+    for(int i = 255; i >= 0; i--)
+    {
+        sum += hist[i];
+
+        if (sum >= pixPercent)
+        {
+            imax = i;
+            break;
+        }
+    }
+
+    //divide by 0 check && no crossing min and max
+    if(imax <= imin)
         return false;
 
     // create lookup table and sets them accordingly
-    byte LUTcontrast[256];
-    for ( int i = 0; i < min; i++ )
+    for ( int i = 0; i < imin; i++ )
         LUTcontrast[i] = 0;
-    for ( int i = max + 1; i < 256; i++ )
+    for ( int i = imax + 1; i < 256; i++ )
         LUTcontrast[i] = 255;
 
-    double slope = 255.0 / (max - min );
-    for ( int i = min; i <= max; i++ )
-        LUTcontrast[i] = (byte)(slope * ( i - min ));
+    double slope = 255.0 / (imax - imin );
+    for ( int i = imin; i <= imax; i++ )
+        LUTcontrast[i] = (byte)(slope * ( i - imin ));
 
     // apply LUTcontrast
     int nrows = image.Height();

@@ -1,7 +1,12 @@
 /*
-               ***** program1.cpp *****
+               ***** pa1.cpp *****
 
-Demo program to illustrate qtImageLib.
+Program Assignment 1
+Class:      Digital Image Processing
+Professor:  John M. Weiss, Ph.D.
+Room:       McLaury 305
+Class Time: 9am M, W, Th
+
 
 Author: John M. Weiss, Ph.D.
 Program written Spring 2015 for SDSM&T CSC442/542 DIP course.
