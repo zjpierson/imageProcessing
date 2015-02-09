@@ -21,37 +21,3 @@ int main( int argc, char *argv[] )
     app.AddActions( &obj );
     return app.Start();
 }
-
-// ----------------------------------- menu bar additions ------------------------------------
-
-// the following methods add actions to the menu bar
-// note the method prototype and naming conventions:
-// bool ClassName::Menu_Menubar_Menuitem( Image & );
-
-// negate the image
-bool MyApp::Menu_Palette_Negate( Image &image )
-{
-    negatePalette( image );
-    return true;
-}
-
-// convert a color image to grayscale
-bool MyApp::Menu_Palette_Grayscale( Image &image )
-{
-    grayscale( image );
-    return true;
-}
-
-// display histogram
-bool MyApp::Menu_Histogram_Display( Image &image )
-{
-    displayHistogram( image );
-    return true;
-}
-
-// histogram contrast stretch
-bool MyApp::Menu_Histogram_Stretch( Image &image )
-{
-    histogramStretch( image );
-    return true;
-}
