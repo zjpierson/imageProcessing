@@ -13,11 +13,15 @@ Modifications:
 // next two lines are typical
 #pragma once
 #include <qtimagelib.h>
+#include <cstdlib>
 
 // class declaration
 class MyApp : public QObject
 {
     Q_OBJECT;	// QOBJECT macro must appear at start of class
+
+  public:
+    int median(int array[], int size);
 
     // all menu items must be prototyped in the "public slots" section
     // note the method prototype and naming conventions:
@@ -26,7 +30,6 @@ class MyApp : public QObject
   public slots:
 
     bool Menu_Palette_Threshold( Image & );
-    bool Menu_Palette_Embossing( Image & );
     bool Menu_Palette_Grayscale( Image & );
 
     bool Menu_Histogram_Display( Image & );
@@ -46,6 +49,7 @@ class MyApp : public QObject
     bool Menu_Filter_Maximum( Image & );
     bool Menu_Filter_Range( Image & );
     bool Menu_Filter_StandardDeviation( Image & );
+    bool Menu_Filter_Embossing(Image & );
     bool Menu_Filter_Gaussian( Image & );
 
     bool Menu_Edge_SobelMagnitude( Image & );
