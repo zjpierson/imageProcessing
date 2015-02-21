@@ -26,7 +26,6 @@ class MyApp : public QObject
 
   public:
     int median(int array[], int size);
-    int popContainer(stack<int> endStack, queue<int> startQ, queue<int> normalQ, int sum);
 
     // all menu items must be prototyped in the "public slots" section
     // note the method prototype and naming conventions:
