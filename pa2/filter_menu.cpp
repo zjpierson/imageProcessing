@@ -255,62 +255,7 @@ bool MyApp::Menu_Filter_NoiseCleaning( Image &image )
 
 bool MyApp::Menu_Filter_Mean( Image &image )
 {
-//    //checks image validity
-//    if ( image.IsNull() ) return false; // not essential, but good practice
-//    
-//    int n = 3;
-//    int nrows = image.Height();
-//    int ncols = image.Width();
-//    int row = 0;
-//    int col = 0;
-//    int sum = 0;
-//    int rbound = 0;
-//    int cbound = 0;
-//    int border = 1;
-//
-//    //get input for nxn neighborhood
-//    if( !getParams(n) )
-//            return false;
-//
-//    //if n is even, add 1 to have a center pixel
-//    if( n % 2 == 0)
-//        n++;
-//
-//    //find number of pixels to the center
-//    border = abs(n/2);
-//
-//    //make copy of image as to not destroy original information
-//    Image temp(image);
-//    
-//    for ( int r = border; r < nrows - border; r++ )
-//    {
-//        for ( int c = border; c < ncols - border; c++ )
-//        {
-//            //neighborhood boundries
-//            rbound = r - border;
-//            cbound = c - border;
-//            
-//            //begins the loop through inner filter
-//            for(row = r-border; row < (n+rbound); row++)
-//            {
-//                for(col = c-border; col < (n+cbound); col++)
-//                {
-//                    sum += image[row][col];
-//                }
-//            }
-//            
-//            //set the resulting pixel to a temporary image
-//            temp[r][c] = (sum/(n*n));
-//
-//            //reset neighborhood variables
-//            sum = 0;
-//        }
-//    }
-//
-//    image = temp;
-//
-//    // return true to update the image
-//    return true;
+    return true;
 }
 
 bool MyApp::Menu_Filter_Median( Image &image )
