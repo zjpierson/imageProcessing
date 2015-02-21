@@ -14,6 +14,10 @@ Modifications:
 #pragma once
 #include <qtimagelib.h>
 #include <cstdlib>
+#include <queue>
+#include <stack>
+
+using namespace std;
 
 // class declaration
 class MyApp : public QObject
@@ -22,6 +26,7 @@ class MyApp : public QObject
 
   public:
     int median(int array[], int size);
+    int popContainer(stack<int> endStack, queue<int> startQ, queue<int> normalQ, int sum);
 
     // all menu items must be prototyped in the "public slots" section
     // note the method prototype and naming conventions:
@@ -49,7 +54,7 @@ class MyApp : public QObject
     bool Menu_Filter_Maximum( Image & );
     bool Menu_Filter_Range( Image & );
     bool Menu_Filter_StandardDeviation( Image & );
-    bool Menu_Filter_Embossing(Image & );
+    bool Menu_Filter_Emboss(Image & );
     bool Menu_Filter_Gaussian( Image & );
 
     bool Menu_Edge_SobelMagnitude( Image & );

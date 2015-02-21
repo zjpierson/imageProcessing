@@ -264,9 +264,10 @@ bool MyApp::Menu_Filter_Mean( Image &image )
     int row = 0;
     int col = 0;
     int sum = 0;
-    int rbound = 0;
-    int cbound = 0;
     int border = 1;
+    queue<int> startQ;
+    queue<int> normalQ;
+    stack<int> endStack;
 
     //get input for nxn neighborhood
     if( !getParams(n) )
@@ -276,11 +277,70 @@ bool MyApp::Menu_Filter_Mean( Image &image )
     if( n % 2 == 0)
         n++;
 
-    //find number of pixels to the center
+    //get number of pixels to the center pixel
     border = abs(n/2);
 
     //make copy of image as to not destroy original information
     Image temp(image);
+
+    //make 2 passes using seperable 1d arrays
+    //first pass though image: iterate across columns
+    for ( int r = 0; r < nrows; r++ )
+    {
+        for ( int c = 0; c < ncols; c++ )
+        {   
+            //Middle case:
+            if( (c-border > 0) && (c+border < ncols) )
+            {
+                sum -= normalQ.front();
+                normalQ.pop();
+
+                normalQ.push(temp[r][c]);
+                sum += temp[r][c];
+
+                image[r][c-border] = (sum/n);
+            }
+            //Beginning case:
+            else if( c-border <= 0 )
+            {
+                if(startQ.size() < border)
+                {
+                    startQ.push(temp[r][c]);
+                    endStack.push(temp[r][c]);
+
+                }
+                else
+                {
+                    popContainer(endStack, startQ, normalQ, sum);
+                    normalQ.push(temp[r][c]);
+                    sum += temp[r][c];
+                    image[r][c-border] = (sum/n);
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //set the resulting pixel to a temporary image
+            temp[r][c] = sum;
+
+            //reset neighborhood variables
+            sum = 0;
+        }
+    }
+    
+
+    //second pass though image: rows
     
     for ( int r = border; r < nrows - border; r++ )
     {
@@ -313,6 +373,22 @@ bool MyApp::Menu_Filter_Mean( Image &image )
     return true;
 }
 
+int popContainer(stack<int> endStack, queue<int> startQ, queue<int> normalQ, int sum)
+{
+    while(!endStack.empty())
+    {
+        sum += endStack.top();
+        normalQ.push(endStack.top());
+        endStack.pop();
+    }
+    while(!startQ.empty())
+    {
+        sum += startQ.front();
+        normalQ.push(startQ.front());
+        startQ.pop();
+    }
+}
+
 bool MyApp::Menu_Filter_Median( Image &image )
 {
     return true;
@@ -338,7 +414,7 @@ bool MyApp::Menu_Filter_StandardDeviation( Image &image )
     return true;
 }
 
-bool MyApp::Menu_Filter_Embossing(Image &image )
+bool MyApp::Menu_Filter_Emboss(Image &image )
 {
     //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
