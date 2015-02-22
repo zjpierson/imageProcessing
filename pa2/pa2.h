@@ -16,6 +16,7 @@ Modifications:
 #include <cstdlib>
 #include <queue>
 #include <stack>
+#include <cmath>
 
 using namespace std;
 
@@ -27,7 +28,8 @@ class MyApp : public QObject
   public:
     int median(int array[], int size);
     int popContainer(stack<int> endStack, queue<int> startQ, queue<int> normalQ, int sum);
-
+    bool sobel_y( Image &image );
+    bool sobel_x( Image &image );
     // all menu items must be prototyped in the "public slots" section
     // note the method prototype and naming conventions:
     // bool Menu_Menubar_Menuitem( Image & );
