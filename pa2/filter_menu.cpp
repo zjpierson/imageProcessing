@@ -311,69 +311,83 @@ bool MyApp::Menu_Filter_Mean( Image &image )
                 }
                 else
                 {
-                    popContainer(endStack, startQ, normalQ, sum);
+                    sum = popContainer(endStack, startQ, normalQ, sum);
                     normalQ.push(temp[r][c]);
                     sum += temp[r][c];
                     image[r][c-border] = (sum/n);
                 }
             }
+            //End case:
+            else if( c+border >= ncols )
+            {
+                endStack.push(temp[r][c]);
 
+                sum -= normalQ.front();
+                normalQ.pop();
 
+                normalQ.push(temp[r][c]);
+                sum += temp[r][c];
 
+                image[r][c-border] = (sum/n);
+            }
+        }
 
+        //New Row Case
+        while(!endStack.empty())
+        {
+            sum -= normalQ.front();
+            normalQ.pop();
 
+            normalQ.push(endStack.top());
+            sum += endStack.top();
 
-
-
-
-
-
-
-
-
-            //set the resulting pixel to a temporary image
-            temp[r][c] = sum;
-
-            //reset neighborhood variables
-            sum = 0;
+            image[r][ncols-endStack.size()] = 255;  //set back to (sum/n);
+            endStack.pop();
+        }
+        
+        //reset neighborhood variables
+        sum = 0;
+        while(!normalQ.empty())
+        {
+            normalQ.pop();
         }
     }
     
 
     //second pass though image: rows
     
-    for ( int r = border; r < nrows - border; r++ )
-    {
-        for ( int c = border; c < ncols - border; c++ )
-        {
-            //neighborhood boundries
-            rbound = r - border;
-            cbound = c - border;
-            
-            //begins the loop through inner filter
-            for(row = r-border; row < (n+rbound); row++)
-            {
-                for(col = c-border; col < (n+cbound); col++)
-                {
-                    sum += image[row][col];
-                }
-            }
-            
-            //set the resulting pixel to a temporary image
-            temp[r][c] = (sum/(n*n));
-
-            //reset neighborhood variables
-            sum = 0;
-        }
-    }
-
-    image = temp;
+//    for ( int r = border; r < nrows - border; r++ )
+//    {
+//        for ( int c = border; c < ncols - border; c++ )
+//        {
+//            //neighborhood boundries
+//            rbound = r - border;
+//            cbound = c - border;
+//            
+//            //begins the loop through inner filter
+//            for(row = r-border; row < (n+rbound); row++)
+//            {
+//                for(col = c-border; col < (n+cbound); col++)
+//                {
+//                    sum += image[row][col];
+//                }
+//            }
+//            
+//            //set the resulting pixel to a temporary image
+//            temp[r][c] = (sum/(n*n));
+//
+//            //reset neighborhood variables
+//            sum = 0;
+//        }
+//    }
+//
+//    image = temp;
 
     // return true to update the image
     return true;
 }
 
-int popContainer(stack<int> endStack, queue<int> startQ, queue<int> normalQ, int sum)
+int MyApp::popContainer(stack<int> endStack, queue<int> startQ, queue<int> normalQ, int sum)
 {
     while(!endStack.empty())
     {
@@ -387,6 +401,8 @@ int popContainer(stack<int> endStack, queue<int> startQ, queue<int> normalQ, int
         normalQ.push(startQ.front());
         startQ.pop();
     }
+
+    return sum;
 }
 
 bool MyApp::Menu_Filter_Median( Image &image )
