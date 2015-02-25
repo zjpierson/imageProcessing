@@ -1,5 +1,23 @@
+/************************************************************************
+* Program: Neighborhood Processing - Assignment 2 
+* Author: Kayhan Karatekeli & Zachary Pierson
+* Class: CSC 442 - Digital Image Processing
+* Instructor: Dr. John Weiss
+* Date: 2/26/15
+* Description: This program is designed to apply spacial-domain filters
+*              and neighborhood operators to an image.
+*
+* File: The file contains the filtering options in the filter menu.
+************************************************************************/
 #include "pa2.h"
 
+/************************************************************************
+Function:     Smoothing
+Description:  This function smooths the image.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_Smoothing_3x3( Image &image )
 {
     //checks image validity
@@ -54,6 +72,13 @@ bool MyApp::Menu_Filter_Smoothing_3x3( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     Sharpening
+Description:  This function sharpens the image.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_Sharpening_3x3( Image &image )
 {
     //checks image validity
@@ -113,6 +138,14 @@ bool MyApp::Menu_Filter_Sharpening_3x3( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     PlusMedian
+Description:  This function takes the median values of a neighborhood
+              using a mask in the shape of a plus.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_PlusMedian( Image &image )
 {
     //checks image validity
@@ -193,6 +226,14 @@ int MyApp::median(int array[], int size)
     return array[size/2];
 }
 
+/************************************************************************
+Function:     NoiseCleaning
+Description:  This function cleans noise in the image using an ad-hoc
+              technique.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_NoiseCleaning( Image &image )
 {
     //checks image validity
@@ -253,6 +294,14 @@ bool MyApp::Menu_Filter_NoiseCleaning( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     Mean
+Description:  This function takes the median values of a neighborhood.
+              The function uses SEPREABILITY to perform its operation.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_Mean( Image &image )
 {
     //checks image validity
@@ -310,12 +359,26 @@ bool MyApp::Menu_Filter_Mean( Image &image )
     return true;
 }
 
-
+/************************************************************************
+Function:     Median
+Description:  This function takes the median values of a neighborhood.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_Median( Image &image )
 {
     return true;
 }
 
+/************************************************************************
+Function:     Minimun
+Description:  This function takes the minimum values of a neighborhood.
+              The function uses SEPREABILITY to perform its operation.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_Minimum( Image &image )
 {
     //checks image validity
@@ -377,6 +440,14 @@ bool MyApp::Menu_Filter_Minimum( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     Maximum
+Description:  This function takes the maximum values of a neighborhood.
+              The function uses SEPREABILITY to perform its operation.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_Maximum( Image &image )
 {
     //checks image validity
@@ -438,6 +509,14 @@ bool MyApp::Menu_Filter_Maximum( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     Range
+Description:  This function takes the range of values of a neighborhood.
+              The function uses SEPREABILITY to perform its operation.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_Range( Image &image )
 {
     //checks image validity
@@ -506,11 +585,26 @@ bool MyApp::Menu_Filter_Range( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     StandardDeviation
+Description:  This function takes the standard deviation of values of 
+              a neighborhood.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_StandardDeviation( Image &image )
 {
     return true;
 }
 
+/************************************************************************
+Function:     Emboss
+Description:  This function creates an embossing technique on the image. 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_Emboss(Image &image )
 {
     //checks image validity
@@ -561,10 +655,16 @@ bool MyApp::Menu_Filter_Emboss(Image &image )
     image = temp;
 
     // return true to update the image
-
     return true;
 }
 
+/************************************************************************
+Function:     Gaussian
+Description:  This function preforms a Gaussian smoothing on the image. 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Filter_Gaussian( Image &image )
 {
     return true;

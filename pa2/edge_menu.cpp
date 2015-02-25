@@ -1,5 +1,24 @@
+/************************************************************************
+* Program: Neighborhood Processing - Assignment 2 
+* Author: Kayhan Karatekeli & Zachary Pierson
+* Class: CSC 442 - Digital Image Processing
+* Instructor: Dr. John Weiss
+* Date: 2/26/15
+* Description: This program is designed to apply spacial-domain filters
+*              and neighborhood operators to an image.
+*
+* File: This file contains the edge operators supplied in the edge menu.
+************************************************************************/
+
 #include "pa2.h"
 
+/************************************************************************
+Function:     SobelMagnitude
+Description:  This function calculates the Sobel edge magnitude. 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Edge_SobelMagnitude( Image &image )
 {
     //checks image validity
@@ -26,6 +45,14 @@ bool MyApp::Menu_Edge_SobelMagnitude( Image &image )
 }
 
 
+/************************************************************************
+Function:     sobel_x
+Description:  This function calculates the Sobel edge mask on the X
+              coordinates. This is used withing the SobelMagnitude. 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::sobel_x( Image &image )
 {
     //checks image validity
@@ -83,6 +110,14 @@ bool MyApp::sobel_x( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     sobel_y
+Description:  This function calculates the Sobel edge mask on the Y
+              coordinates. This is used withing the SobelMagnitude. 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::sobel_y( Image &image )
 {
     //checks image validity
@@ -141,7 +176,15 @@ bool MyApp::sobel_y( Image &image )
     return true;
 }
 
-
+/************************************************************************
+Function:     SobelDirection
+Description:  This function calculates the Sobel edge mask on the X & Y
+              coordinates. They are then utilized to calculate the arctan
+              of the intensities, which is then scaled from 0-255. 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Edge_SobelDirection( Image &image )
 {
     //checks image validity
@@ -206,16 +249,40 @@ bool MyApp::Menu_Edge_SobelDirection( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     KirschMagnitude
+Description:  This function calculates the Kirsch edge magnitude of the
+              imagei using 8 rotations. 
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Edge_KirschMagnitude( Image &image )
 {
     return true;
 }
 
+/************************************************************************
+Function:     KirschDirection
+Description:  Calculates the Kirsch edge using the direction coordinates
+              +/- 22.5 degrees.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Edge_KirschDirection( Image &image )
 {
     return true;
 }
 
+/************************************************************************
+Function:     Lapalcian
+Description:  This fucntion is designed to calculate the Laplacian
+              edges of the image.
+Parameters:   param[in]  image - The image being converted.
+              param[out] true  - Updates the image upon completion.
+              param[out] false - Exits function if image is NULL.
+************************************************************************/
 bool MyApp::Menu_Edge_Laplacian( Image &image )
 {
     return true;
