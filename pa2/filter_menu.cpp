@@ -255,6 +255,58 @@ bool MyApp::Menu_Filter_NoiseCleaning( Image &image )
 
 bool MyApp::Menu_Filter_Mean( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+    
+    //adjust rows and columns because of the 3x3 neighborhood
+    int nrows = image.Height();
+    int ncols = image.Width();
+    int n = 15;
+    int border = 0;
+    int sum = 0;
+
+    if(! getParams(n))  return false;
+
+    if( n % 2 == 0 )
+        n++;
+
+    //making use of int division
+    border = (n/2);
+
+    //make copy of image as to not destroy original information
+    Image temp(image);
+
+    //first pass going through the rows
+    for ( int r = 0; r < nrows; r++ )
+    {
+        for ( int c = border; c < (ncols - border); c++ )
+        {
+            //loop though neighborhood
+            for(int i = (c - border); i < (c + border); i++)
+            {
+                sum += image[r][i];
+            }
+            temp[r][c] = (sum/n);
+            sum = 0;
+        }
+    }
+
+    //second pass going through the columns
+    for ( int c = 0; c < ncols; c++ )
+    {
+        for ( int r = border; r < (nrows - border); r++ )
+        {
+            //loop though neighborhood
+            for(int i = (r - border); i < (r + border); i++)
+            {
+                sum += temp[i][c];
+            }
+            image[r][c] = (sum/n);
+            sum = 0;
+        }
+    }
+
+    // return true to update the image
     return true;
 }
 
@@ -266,16 +318,191 @@ bool MyApp::Menu_Filter_Median( Image &image )
 
 bool MyApp::Menu_Filter_Minimum( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+    
+    //adjust rows and columns because of the 3x3 neighborhood
+    int nrows = image.Height();
+    int ncols = image.Width();
+    int n = 15;
+    int border = 0;
+    int sum = 0;
+    int min = 256;
+    
+
+    if(! getParams(n))  return false;
+
+    if( n % 2 == 0 )
+        n++;
+
+    //making use of int division
+    border = (n/2);
+
+    //make copy of image as to not destroy original information
+    Image temp(image);
+
+    //first pass going through the rows
+    for ( int r = 0; r < nrows; r++ )
+    {
+        for ( int c = border; c < (ncols - border); c++ )
+        {
+            //loop though neighborhood
+            for(int i = (c - border); i < (c + border); i++)
+            {
+                if(image[r][i] < min)
+                    min = image[r][i];
+            }
+            temp[r][c] = min;
+            min = 256;
+        }
+    }
+
+    //second pass going through the columns
+    for ( int c = 0; c < ncols; c++ )
+    {
+        for ( int r = border; r < (nrows - border); r++ )
+        {
+            //loop though neighborhood
+            for(int i = (r - border); i < (r + border); i++)
+            {
+                if(temp[i][c] < min)
+                    min = temp[i][c];
+            }
+            image[r][c] = min;
+            min = 256;
+        }
+    }
+
+    // return true to update the image
     return true;
 }
 
 bool MyApp::Menu_Filter_Maximum( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+    
+    //adjust rows and columns because of the 3x3 neighborhood
+    int nrows = image.Height();
+    int ncols = image.Width();
+    int n = 15;
+    int border = 0;
+    int sum = 0;
+    int max = 0;
+    
+
+    if(! getParams(n))  return false;
+
+    if( n % 2 == 0 )
+        n++;
+
+    //making use of int division
+    border = (n/2);
+
+    //make copy of image as to not destroy original information
+    Image temp(image);
+
+    //first pass going through the rows
+    for ( int r = 0; r < nrows; r++ )
+    {
+        for ( int c = border; c < (ncols - border); c++ )
+        {
+            //loop though neighborhood
+            for(int i = (c - border); i < (c + border); i++)
+            {
+                if(image[r][i] > max)
+                    max = image[r][i];
+            }
+            temp[r][c] = max;
+            max = 0;
+        }
+    }
+
+    //second pass going through the columns
+    for ( int c = 0; c < ncols; c++ )
+    {
+        for ( int r = border; r < (nrows - border); r++ )
+        {
+            //loop though neighborhood
+            for(int i = (r - border); i < (r + border); i++)
+            {
+                if(temp[i][c] > max)
+                    max = temp[i][c];
+            }
+            image[r][c] = max;
+            max = 0;
+        }
+    }
+
+    // return true to update the image
     return true;
 }
 
 bool MyApp::Menu_Filter_Range( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+    
+    //adjust rows and columns because of the 3x3 neighborhood
+    int nrows = image.Height();
+    int ncols = image.Width();
+    int n = 15;
+    int border = 0;
+    int sum = 0;
+    int max = 0;
+    int min = 256;
+    
+
+    if(! getParams(n))  return false;
+
+    if( n % 2 == 0 )
+        n++;
+
+    //making use of int division
+    border = (n/2);
+
+    //make copy of image as to not destroy original information
+    Image temp(image);
+
+    //first pass going through the rows
+    for ( int r = 0; r < nrows; r++ )
+    {
+        for ( int c = border; c < (ncols - border); c++ )
+        {
+            //loop though neighborhood
+            for(int i = (c - border); i < (c + border); i++)
+            {
+                if(image[r][i] > max)
+                    max = image[r][i];
+                if(image[r][i] < min)
+                    min = image[r][i];
+            }
+            temp[r][c] = max - min;
+            max = 0;
+            min = 256;
+        }
+    }
+
+    //second pass going through the columns
+    for ( int c = 0; c < ncols; c++ )
+    {
+        for ( int r = border; r < (nrows - border); r++ )
+        {
+            //loop though neighborhood
+            for(int i = (r - border); i < (r + border); i++)
+            {
+                if(temp[i][c] > max)
+                    max = temp[i][c];
+                if(temp[i][c] < min)
+                    min = temp[i][c];
+            }
+            image[r][c] = max - min;
+            max = 0;
+            min = 256;
+        }
+    }
+
+    // return true to update the image
     return true;
 }
 
