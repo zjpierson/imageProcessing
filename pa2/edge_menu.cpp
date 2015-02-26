@@ -285,5 +285,55 @@ Parameters:   param[in]  image - The image being converted.
 ************************************************************************/
 bool MyApp::Menu_Edge_Laplacian( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+    
+    //adjust rows and columns because of the 3x3 neighborhood
+    int nrows = image.Height();
+    int ncols = image.Width();
+    int row = 0;
+    int col = 0;
+    int i = 0;
+    int sum = 128;
+
+    //create filter mask matrix
+    //These are seperable, but using a 3x3 matrix
+    int matrix[9] = {0, -1, 0, -1, 4, -1, 0, -1, 0};
+
+    //make copy of image as to not destroy original information
+    Image temp(image);
+    
+    for ( int r = 1; r < nrows - 1; r++ )
+    {
+        for ( int c = 1; c < ncols - 1; c++ )
+        {
+            //begins the loop through inner filter
+            for(row = r-1; row <= r+1; row++)
+            {
+                for(col = c-1; col <= c+1; col++)
+                {
+                    sum += matrix[i] * temp[row][col];
+                    i++;
+                }
+            }
+
+            //check if out of range
+            if(sum < 0)
+                image[r][c] = 0;
+            else if(sum > 255)
+                image[r][c] = 255;
+            else
+                image[r][c] = sum;
+
+            //resets variables
+            i = 0;
+            sum = 128;
+        }
+    }
+    
+    // return true to update the image
     return true;
 }
+
+
+
