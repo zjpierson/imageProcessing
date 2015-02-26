@@ -15,8 +15,9 @@ Modifications:
 #include <qtimagelib.h>
 #include <cstdlib>
 #include <queue>
-#include <stack>
+//#include <stack>
 #include <cmath>
+#include <vector>
 
 using namespace std;
 
@@ -27,9 +28,10 @@ class MyApp : public QObject
 
   public:
     int median(int array[], int size);
-    int popContainer(stack<int> endStack, queue<int> startQ, queue<int> normalQ, int sum);
+    int median(vector<int> array);
     bool sobel_y( Image &image );
     bool sobel_x( Image &image );
+    int maxKirsch(int rotationSum[], int & max);
     // all menu items must be prototyped in the "public slots" section
     // note the method prototype and naming conventions:
     // bool Menu_Menubar_Menuitem( Image & );
@@ -57,7 +59,6 @@ class MyApp : public QObject
     bool Menu_Filter_Range( Image & );
     bool Menu_Filter_StandardDeviation( Image & );
     bool Menu_Filter_Emboss(Image & );
-    bool Menu_Filter_Gaussian( Image & );
 
     bool Menu_Edge_SobelMagnitude( Image & );
     bool Menu_Edge_SobelDirection( Image & );

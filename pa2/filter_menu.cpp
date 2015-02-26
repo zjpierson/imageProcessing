@@ -30,8 +30,6 @@ bool MyApp::Menu_Filter_Smoothing_3x3( Image &image )
     int col = 0;
     int i = 0;
     int sum = 0;
-    int rbound = 0;
-    int cbound = 0;
 
     //create filter mask matrix
     int matrixArr[9] = {1, 2, 1, 2, 4, 2, 1, 2, 1};
@@ -43,14 +41,10 @@ bool MyApp::Menu_Filter_Smoothing_3x3( Image &image )
     {
         for ( int c = 1; c < ncols - 1; c++ )
         {
-            //neighborhood boundries
-            rbound = r - 1;
-            cbound = c - 1;
-            
             //begins the loop through inner filter
-            for(row = r-1; row < (3+rbound); row++)
+            for(row = r-1; row <= r+1; row++)
             {
-                for(col = c-1; col < (3+cbound); col++)
+                for(col = c-1; col <= c+1; col++)
                 {
                     sum += matrixArr[i] * image[row][col];
                     i++;
@@ -91,8 +85,6 @@ bool MyApp::Menu_Filter_Sharpening_3x3( Image &image )
     int col = 0;
     int i = 0;
     int sum = 0;
-    int rbound = 0;
-    int cbound = 0;
 
     //create filter mask matrix
     int matrixArr[9] = {0, -1, 0, -1, 5, -1, 0, -1, 0};
@@ -104,14 +96,10 @@ bool MyApp::Menu_Filter_Sharpening_3x3( Image &image )
     {
         for ( int c = 1; c < ncols - 1; c++ )
         {
-            //neighborhood boundries
-            rbound = r - 1;
-            cbound = c - 1;
-            
             //begins the loop through inner filter
-            for(row = r-1; row < (3+rbound); row++)
+            for(row = r-1; row <= r+1; row++)
             {
-                for(col = c-1; col < (3+cbound); col++)
+                for(col = c-1; col <= c+1; col++)
                 {
                     sum += matrixArr[i] * image[row][col];
                     i++;
@@ -158,8 +146,6 @@ bool MyApp::Menu_Filter_PlusMedian( Image &image )
     int col = 0;
     int i = 0;
     int j = 0;
-    int rbound = 0;
-    int cbound = 0;
 
     //create filter mask matrix
     int matrixA[9] = {0, 1, 0, 1, 1, 1, 0, 1, 0};
@@ -172,14 +158,10 @@ bool MyApp::Menu_Filter_PlusMedian( Image &image )
     {
         for ( int c = 1; c < ncols - 1; c++ )
         {
-            //neighborhood boundries
-            rbound = r - 1;
-            cbound = c - 1;
-            
             //begins the loop through inner filter
-            for(row = r-1; row < (3+rbound); row++)
+            for(row = r-1; row <= r+1; row++)
             {
-                for(col = c-1; col < (3+cbound); col++)
+                for(col = c-1; col <= c+1; col++)
                 {
                     if(matrixA[i] == 1)
                     {
@@ -250,8 +232,6 @@ bool MyApp::Menu_Filter_NoiseCleaning( Image &image )
     int ncols = image.Width();
     int row = 0;
     int col = 0;
-    int rbound = 0;
-    int cbound = 0;
 
     //make copy of image as to not destroy original information
     Image temp(image);
@@ -260,19 +240,15 @@ bool MyApp::Menu_Filter_NoiseCleaning( Image &image )
     {
         for ( int c = 1; c < ncols - 1; c++ )
         {
-            //neighborhood boundries
-            rbound = r - 1;
-            cbound = c - 1;
-            
             //begins the loop through inner filter (neighborhood)
-            for(row = r-1; row < (3+rbound); row++)
+            for(row = r-1; row <= r+1; row++)
             {
-                for(col = c-1; col < (3+cbound); col++)
+                for(col = c-1; col <= c+1; col++)
                 {
                     //add up all the pixels except for the center pixel
                     if( row == r && col == c )
                         continue;
-                    avg += image[row][col];
+                    avg += temp[row][col];
                 }
             }
             
@@ -280,15 +256,13 @@ bool MyApp::Menu_Filter_NoiseCleaning( Image &image )
             avg /= 8;
 
             //do thresholding 
-            if( abs(image[r][c] - avg) > threshold )
-                temp[r][c] = avg;
+            if( abs(temp[r][c] - avg) > threshold )
+                image[r][c] = avg;
 
             //reset loop variables
             avg = 0;
         }
     }
-
-    image = temp;
 
     // return true to update the image
     return true;
@@ -368,11 +342,76 @@ Parameters:   param[in]  image - The image being converted.
 ************************************************************************/
 bool MyApp::Menu_Filter_Median( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+    
+    //adjust rows and columns because of the 3x3 neighborhood
+    int nrows = image.Height();
+    int ncols = image.Width();
+    int n = 15;
+    int border = 0;
+    vector<int> neighbors;
+    
+
+    if(! getParams(n))  return false;
+
+    if( n % 2 == 0 )
+        n++;
+
+    //making use of int division
+    border = (n/2);
+
+    //make copy of image as to not destroy original information
+    Image temp(image);
+
+    for ( int r = border; r < (nrows - border); r++ )
+    {
+        for ( int c = border; c < (ncols - border); c++ )
+        {
+            //loop through whole neighborhood
+            for(int i = (r - border); i <= (r + border); i++)
+            {
+                for(int j = (c - border); j <= (c + border); j++)
+                {
+                    neighbors.push_back(temp[i][j]);
+                }
+            }
+
+            //set median value to the image
+            image[r][c] = median(neighbors);
+
+            //clear the vector
+            neighbors.erase(neighbors.begin(), neighbors.end());
+        }
+    }
+
+    // return true to update the image
     return true;
 }
 
+int MyApp::median(vector<int> array)
+{
+    int j = 0;
+    int temp = 0;
+
+    for(int i = 1; (unsigned)i < array.size(); i++)
+    {
+        j = i;
+
+        while(j > 0 && array[j-1] > array[j])    
+        {
+            temp = array[j];
+            array[j] = array[j-1];
+            array[j-1] = temp;
+            j--;
+        }
+    }
+
+    return array[array.size()/2];
+}
+
 /************************************************************************
-Function:     Minimun
+Function:     Minimum
 Description:  This function takes the minimum values of a neighborhood.
               The function uses SEPREABILITY to perform its operation.
 Parameters:   param[in]  image - The image being converted.
@@ -389,7 +428,6 @@ bool MyApp::Menu_Filter_Minimum( Image &image )
     int ncols = image.Width();
     int n = 15;
     int border = 0;
-    int sum = 0;
     int min = 256;
     
 
@@ -458,7 +496,6 @@ bool MyApp::Menu_Filter_Maximum( Image &image )
     int ncols = image.Width();
     int n = 15;
     int border = 0;
-    int sum = 0;
     int max = 0;
     
 
@@ -512,7 +549,6 @@ bool MyApp::Menu_Filter_Maximum( Image &image )
 /************************************************************************
 Function:     Range
 Description:  This function takes the range of values of a neighborhood.
-              The function uses SEPREABILITY to perform its operation.
 Parameters:   param[in]  image - The image being converted.
               param[out] true  - Updates the image upon completion.
               param[out] false - Exits function if image is NULL.
@@ -521,16 +557,17 @@ bool MyApp::Menu_Filter_Range( Image &image )
 {
     //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
+
+    //find range on grayscale image
+    grayscale( image );
     
     //adjust rows and columns because of the 3x3 neighborhood
     int nrows = image.Height();
     int ncols = image.Width();
     int n = 15;
     int border = 0;
-    int sum = 0;
     int max = 0;
     int min = 256;
-    
 
     if(! getParams(n))  return false;
 
@@ -543,38 +580,25 @@ bool MyApp::Menu_Filter_Range( Image &image )
     //make copy of image as to not destroy original information
     Image temp(image);
 
-    //first pass going through the rows
-    for ( int r = 0; r < nrows; r++ )
+
+    for ( int r = border; r < (nrows - border); r++ )
     {
         for ( int c = border; c < (ncols - border); c++ )
         {
-            //loop though neighborhood
-            for(int i = (c - border); i < (c + border); i++)
+            //loop through whole neighborhood
+            for(int i = (r - border); i <= (r + border); i++)
             {
-                if(image[r][i] > max)
-                    max = image[r][i];
-                if(image[r][i] < min)
-                    min = image[r][i];
+                for(int j = (c - border); j <= (c + border); j++)
+                {
+                    //find min and max of neighborhood
+                    if(temp[i][j] > max)
+                        max = temp[i][j];
+                    if(temp[i][j] < min)
+                        min = temp[i][j];
+                }
             }
-            temp[r][c] = max - min;
-            max = 0;
-            min = 256;
-        }
-    }
 
-    //second pass going through the columns
-    for ( int c = 0; c < ncols; c++ )
-    {
-        for ( int r = border; r < (nrows - border); r++ )
-        {
-            //loop though neighborhood
-            for(int i = (r - border); i < (r + border); i++)
-            {
-                if(temp[i][c] > max)
-                    max = temp[i][c];
-                if(temp[i][c] < min)
-                    min = temp[i][c];
-            }
+            //set the center pxl to the range
             image[r][c] = max - min;
             max = 0;
             min = 256;
@@ -595,6 +619,62 @@ Parameters:   param[in]  image - The image being converted.
 ************************************************************************/
 bool MyApp::Menu_Filter_StandardDeviation( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+    
+    //adjust rows and columns because of the 3x3 neighborhood
+    int nrows = image.Height();
+    int ncols = image.Width();
+    int n = 15;
+    int border = 0;
+    double sum = 0;
+    double mean = 0;
+    vector<int> neighbors;
+
+    if(! getParams(n))  return false;
+
+    if( n % 2 == 0 )
+        n++;
+
+    //making use of int division
+    border = (n/2);
+
+    //make copy of image as to not destroy original information
+    Image temp(image);
+
+    for ( int r = border; r < (nrows - border); r++ )
+    {
+        for ( int c = border; c < (ncols - border); c++ )
+        {
+            //loop through whole neighborhood
+            for(int i = (r - border); i <= (r + border); i++)
+            {
+                for(int j = (c - border); j <= (c + border); j++)
+                {
+                    mean += temp[i][j];
+                    neighbors.push_back(temp[i][j]);
+                }
+            }
+            
+            //compute the mean
+            mean = (mean/(double)neighbors.size());
+
+            //find the square of the differences
+            for(int i = 0; (unsigned)i < neighbors.size(); i++)
+                sum += pow( (neighbors[i] - mean), 2);
+
+            //update image with the standard deviation
+            image[r][c] = sqrt(sum/(double)neighbors.size());
+
+            //clear the vector
+            neighbors.erase(neighbors.begin(), neighbors.end());
+            //reset variables
+            mean = 0;
+            sum = 0;
+        }
+    }
+
+    // return true to update the image
     return true;
 }
 
@@ -613,60 +693,22 @@ bool MyApp::Menu_Filter_Emboss(Image &image )
     //adjust rows and columns because of the 3x3 neighborhood
     int nrows = image.Height();
     int ncols = image.Width();
-    int row = 0;
-    int col = 0;
-    int i = 0;
-    int sum = 0;
-    int rbound = 0;
-    int cbound = 0;
-
-    //create filter mask matrix
-    int matrixArr[9] = {0, 0, 0, 0, 1, 0, 0, 0, -1};
+    int value = 0;
+    int offset = 3;
 
     //make copy of image as to not destroy original information
     Image temp(image);
     
-    for ( int r = 1; r < nrows - 1; r++ )
+    for ( int r = 0; r < nrows - offset; r++ )
     {
-        for ( int c = 1; c < ncols - 1; c++ )
+        for ( int c = 0; c < ncols - offset; c++ )
         {
-            //neighborhood boundries
-            rbound = r - 1;
-            cbound = c - 1;
-            
-            //begins the loop through inner filter
-            for(row = r-1; row < (3+rbound); row++)
-            {
-                for(col = c-1; col < (3+cbound); col++)
-                {
-                    sum += matrixArr[i] * image[row][col];
-                    i++;
-                }
-            }
-            
-            temp[r][c] = (sum + 255)/2;
-
-            //reset neighborhood variables
-            i = 0;
-            sum = 0;
+            value = temp[r+offset][c+offset] - temp[r][c];
+            image[r][c] = (value + 255)/2;
         }
     }
 
-    image = temp;
-
     // return true to update the image
-    return true;
-}
-
-/************************************************************************
-Function:     Gaussian
-Description:  This function preforms a Gaussian smoothing on the image. 
-Parameters:   param[in]  image - The image being converted.
-              param[out] true  - Updates the image upon completion.
-              param[out] false - Exits function if image is NULL.
-************************************************************************/
-bool MyApp::Menu_Filter_Gaussian( Image &image )
-{
     return true;
 }
 
