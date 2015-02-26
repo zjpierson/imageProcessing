@@ -259,7 +259,86 @@ Parameters:   param[in]  image - The image being converted.
 ************************************************************************/
 bool MyApp::Menu_Edge_KirschMagnitude( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+    
+    //adjust rows and columns because of the 3x3 neighborhood
+    int nrows = image.Height();
+    int ncols = image.Width();
+    int row = 0;
+    int col = 0;
+    int i = 0;
+    double value = 0;
+    int max = -1;
+
+    //create filter mask matrix
+    //create an array of masks
+    int rotation[8][9]={-3, -3, -3, -3, 0, -3, 5, 5, 5,
+                        -3, -3, -3, 5, 0, -3, 5, 5, -3,
+                        5, -3, -3, 5, 0, -3, 5, -3, -3,
+                        5, 5, -3, 5, 0, -3, -3, -3, -3,
+                        5, 5, 5, -3, 0, -3, -3, -3, -3,
+                        -3, 5, 5, -3, 0, 5, -3, -3, -3,
+                        -3, -3, 5, -3, 0, 5, -3, -3, 5,
+                        -3, -3, -3, -3, 0, 5, -3, 5, 5};
+    int rotationSum[8] = {0};
+
+    //make copy of image as to not destroy original information
+    Image temp(image);
+    
+    for ( int r = 1; r < nrows - 1; r++ )
+    {
+        for ( int c = 1; c < ncols - 1; c++ )
+        {
+            //begins the loop through inner filter
+            for(row = r-1; row <= r+1; row++)
+            {
+                for(col = c-1; col <= c+1; col++)
+                {
+                    for(int j = 0; j < 8; j++)
+                        rotationSum[j] += rotation[j][i] * temp[row][col];
+                    i++;
+                }
+            }
+            
+            //set image to maximum sum of rotation 
+            //masks divided by 3 and clipped
+            maxKirsch(rotationSum, max);
+
+            value = ((double)max/3.0);
+
+            if(value > 255)
+                value = 255;
+
+            image[r][c] = value;
+
+            //reset neighborhood variables and the sum's
+            i = 0;
+        }
+    }
+    
+    // return true to update the image
     return true;
+}
+
+int MyApp::maxKirsch(int rotationSum[], int & max)
+{
+    max = -1;
+    int index;
+
+    for(int i = 0; i < 8; i++)
+    {
+        if(rotationSum[i] > max)
+        {
+            index = i;
+            max = rotationSum[i];
+        }
+
+        //reset rotation back to 0 for next pass
+        rotationSum[i] = 0;
+    }
+
+    return index;
 }
 
 /************************************************************************
@@ -272,6 +351,59 @@ Parameters:   param[in]  image - The image being converted.
 ************************************************************************/
 bool MyApp::Menu_Edge_KirschDirection( Image &image )
 {
+    //checks image validity
+    if ( image.IsNull() ) return false; // not essential, but good practice
+    
+    //adjust rows and columns because of the 3x3 neighborhood
+    int nrows = image.Height();
+    int ncols = image.Width();
+    int row = 0;
+    int col = 0;
+    int i = 0;
+    int max = -1;
+    int index = 0;
+
+    //create filter mask matrix
+    //create an array of masks
+    int rotation[8][9]={-3, -3, 5, -3, 0, 5, -3, -3, 5,
+                        -3, 5, 5, -3, 0, 5, -3, -3, -3,
+                        5, 5, 5, -3, 0, -3, -3, -3, -3,
+                        5, 5, -3, 5, 0, -3, -3, -3, -3,
+                        5, -3, -3, 5, 0, -3, 5, -3, -3,
+                        -3, -3, -3, 5, 0, -3, 5, 5, -3,
+                        -3, -3, -3, -3, 0, -3, 5, 5, 5, 
+                        -3, -3, -3, -3, 0, 5, -3, 5, 5};
+    int rotationSum[8] = {0};
+
+    //make copy of image as to not destroy original information
+    Image temp(image);
+    
+    for ( int r = 1; r < nrows - 1; r++ )
+    {
+        for ( int c = 1; c < ncols - 1; c++ )
+        {
+            //begins the loop through inner filter
+            for(row = r-1; row <= r+1; row++)
+            {
+                for(col = c-1; col <= c+1; col++)
+                {
+                    for(int j = 0; j < 8; j++)
+                        rotationSum[j] += rotation[j][i] * temp[row][col];
+                    i++;
+                }
+            }
+            
+            //set image to angle of maximum rotation 
+            index = maxKirsch(rotationSum, max);
+
+            image[r][c] = ((double)(index * 45)/360.0) * 255;
+
+            //reset neighborhood variable
+            i = 0;
+        }
+    }
+    
+    // return true to update the image
     return true;
 }
 

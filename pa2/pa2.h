@@ -14,7 +14,7 @@ Modifications:
 #pragma once
 #include <qtimagelib.h>
 #include <cstdlib>
-//#include <queue>
+#include <queue>
 //#include <stack>
 #include <cmath>
 #include <vector>
@@ -31,6 +31,7 @@ class MyApp : public QObject
     int median(vector<int> array);
     bool sobel_y( Image &image );
     bool sobel_x( Image &image );
+    int maxKirsch(int rotationSum[], int & max);
     // all menu items must be prototyped in the "public slots" section
     // note the method prototype and naming conventions:
     // bool Menu_Menubar_Menuitem( Image & );

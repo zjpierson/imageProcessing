@@ -549,7 +549,6 @@ bool MyApp::Menu_Filter_Maximum( Image &image )
 /************************************************************************
 Function:     Range
 Description:  This function takes the range of values of a neighborhood.
-              The function uses SEPREABILITY to perform its operation.
 Parameters:   param[in]  image - The image being converted.
               param[out] true  - Updates the image upon completion.
               param[out] false - Exits function if image is NULL.
@@ -558,6 +557,9 @@ bool MyApp::Menu_Filter_Range( Image &image )
 {
     //checks image validity
     if ( image.IsNull() ) return false; // not essential, but good practice
+
+    //find range on grayscale image
+    grayscale( image );
     
     //adjust rows and columns because of the 3x3 neighborhood
     int nrows = image.Height();
@@ -566,7 +568,6 @@ bool MyApp::Menu_Filter_Range( Image &image )
     int border = 0;
     int max = 0;
     int min = 256;
-    
 
     if(! getParams(n))  return false;
 
@@ -579,38 +580,25 @@ bool MyApp::Menu_Filter_Range( Image &image )
     //make copy of image as to not destroy original information
     Image temp(image);
 
-    //first pass going through the rows
-    for ( int r = 0; r < nrows; r++ )
+
+    for ( int r = border; r < (nrows - border); r++ )
     {
         for ( int c = border; c < (ncols - border); c++ )
         {
-            //loop though neighborhood
-            for(int i = (c - border); i < (c + border); i++)
+            //loop through whole neighborhood
+            for(int i = (r - border); i <= (r + border); i++)
             {
-                if(image[r][i] > max)
-                    max = image[r][i];
-                if(image[r][i] < min)
-                    min = image[r][i];
+                for(int j = (c - border); j <= (c + border); j++)
+                {
+                    //find min and max of neighborhood
+                    if(temp[i][j] > max)
+                        max = temp[i][j];
+                    if(temp[i][j] < min)
+                        min = temp[i][j];
+                }
             }
-            temp[r][c] = max - min;
-            max = 0;
-            min = 256;
-        }
-    }
 
-    //second pass going through the columns
-    for ( int c = 0; c < ncols; c++ )
-    {
-        for ( int r = border; r < (nrows - border); r++ )
-        {
-            //loop though neighborhood
-            for(int i = (r - border); i < (r + border); i++)
-            {
-                if(temp[i][c] > max)
-                    max = temp[i][c];
-                if(temp[i][c] < min)
-                    min = temp[i][c];
-            }
+            //set the center pxl to the range
             image[r][c] = max - min;
             max = 0;
             min = 256;
@@ -669,14 +657,14 @@ bool MyApp::Menu_Filter_StandardDeviation( Image &image )
             }
             
             //compute the mean
-            mean = (mean/(double)n);
+            mean = (mean/(double)neighbors.size());
 
             //find the square of the differences
-            for(int i = 0; i < n; i++)
-                sum = pow( (neighbors[i] - mean), 2);
+            for(int i = 0; (unsigned)i < neighbors.size(); i++)
+                sum += pow( (neighbors[i] - mean), 2);
 
             //update image with the standard deviation
-            image[r][c] = sqrt(sum/(double)n);
+            image[r][c] = sqrt(sum/(double)neighbors.size());
 
             //clear the vector
             neighbors.erase(neighbors.begin(), neighbors.end());
