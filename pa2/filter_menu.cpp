@@ -9,6 +9,7 @@
 *
 * File: The file contains the filtering options in the filter menu.
 ************************************************************************/
+
 #include "pa2.h"
 
 /************************************************************************
@@ -187,6 +188,14 @@ bool MyApp::Menu_Filter_PlusMedian( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     median
+Description:  This function sorts a list of numbers and returns the
+              median value.
+Parameters:   param[in]  array         - Array of values to be sorted.
+              param[in]  size          - Size of array passed in. 
+              param[out] array[size/2] - Middle value of sorted array.
+************************************************************************/
 int MyApp::median(int array[], int size)
 {
     int j = 0;
@@ -389,6 +398,13 @@ bool MyApp::Menu_Filter_Median( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     median
+Description:  This function sorts a list of numbers and returns the
+              median value. This is an overloaded function.
+Parameters:   param[in]  array         - Vector of values to be sorted.
+              param[out] array[size/2] - Middle value of sorted array.
+************************************************************************/
 int MyApp::median(vector<int> array)
 {
     int j = 0;

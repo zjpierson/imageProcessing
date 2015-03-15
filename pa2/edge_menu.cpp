@@ -321,6 +321,13 @@ bool MyApp::Menu_Edge_KirschMagnitude( Image &image )
     return true;
 }
 
+/************************************************************************
+Function:     maxKirsch
+Description:  This function calculates the maximum of the 8 rotations.
+Parameters:   param[in]  rotationSum - Array of sums for each mask.
+              param[in]  max         - Maximum value of all masks. 
+              param[out] index - The specific rotation matrix used.
+************************************************************************/
 int MyApp::maxKirsch(int rotationSum[], int & max)
 {
     max = -1;
@@ -466,6 +473,3 @@ bool MyApp::Menu_Edge_Laplacian( Image &image )
     // return true to update the image
     return true;
 }
-
-
-

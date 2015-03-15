@@ -1,21 +1,19 @@
-/*
-               ***** pa2.h *****
+/************************************************************************
+* Program: Neighborhood Processing - Assignment 2 
+* Author: Kayhan Karatekeli & Zachary Pierson
+* Class: CSC 442 - Digital Image Processing
+* Instructor: Dr. John Weiss
+* Date: 2/26/15
+* Description: This program is designed to apply spacial-domain filters
+*              and neighborhood operators to an image.
+*
+* File: This file holds the function prototypes for the program. 
+************************************************************************/
 
-Demo program to illustrate qtImageLib.
-Example 2 shows how to add menu items to the default image viewer.
-
-Author: John M. Weiss, Ph.D.
-Written Spring 2015 for SDSM&T CSC442/542 DIP course.
-
-Modifications:
-*/
-
-// next two lines are typical
 #pragma once
 #include <qtimagelib.h>
 #include <cstdlib>
 #include <queue>
-//#include <stack>
 #include <cmath>
 #include <vector>
 
@@ -32,12 +30,8 @@ class MyApp : public QObject
     bool sobel_y( Image &image );
     bool sobel_x( Image &image );
     int maxKirsch(int rotationSum[], int & max);
-    // all menu items must be prototyped in the "public slots" section
-    // note the method prototype and naming conventions:
-    // bool Menu_Menubar_Menuitem( Image & );
 
   public slots:
-
     bool Menu_Palette_Threshold( Image & );
     bool Menu_Palette_Grayscale( Image & );
 
@@ -65,6 +59,4 @@ class MyApp : public QObject
     bool Menu_Edge_KirschMagnitude( Image & );
     bool Menu_Edge_KirschDirection( Image & );
     bool Menu_Edge_Laplacian( Image & );
-
-
 };
